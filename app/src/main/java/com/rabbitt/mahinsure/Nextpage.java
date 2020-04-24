@@ -1,17 +1,20 @@
 package com.rabbitt.mahinsure;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
+
 public class Nextpage extends AppCompatActivity {
 
     private static final String TAG = "malu";
-
+    SkeletonScreen skeletonScreen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +23,12 @@ public class Nextpage extends AppCompatActivity {
 
         Log.i(TAG, "onCreate: ");
 
+        ViewGroup viewGroup = findViewById(R.id.skim);
+
+        skeletonScreen = Skeleton.bind(viewGroup)
+                .load(R.layout.info_skim)
+                .color(R.color.white)
+                .show();
 
     }
 
@@ -55,6 +64,7 @@ public class Nextpage extends AppCompatActivity {
     }
 
     public void photo(View view) {
-        startActivity(new Intent(this, Upload.class));
+        skeletonScreen.hide();
+//        startActivity(new Intent(this, Upload.class));
     }
 }

@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#314AFF</color>
+    <color name="colorPrimaryDark">#0021CA</color>
+    <color name="colorAccent">#E13863</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+
+
+<!--    D6 EC EE-->
+<!--    BD E4 E8-->
+<!--    99 D8 DE-->
+<!--    71 CD D5-->
+<!--    7A 69 F3-->
+<!--    70 51 ED-->
+<!--    5E 44 D2-->
+<!--    4E 36 B6-->
+
+
+
+
+
+
 </resources>

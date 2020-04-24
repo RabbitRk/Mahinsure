@@ -22,50 +22,74 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:fontFamily="@font/pop_bold"
+        android:text="Mahinsure"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24dp"
         android:transitionName="texttrans"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image"
-        app:layout_constraintVertical_bias="0.078" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:id="@+id/collector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.76">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Username" />
+            android:fontFamily="@font/pop_med"
+            android:text="Username"
+            android:textSize="16sp" />
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edt_bg"
+            android:fontFamily="@font/pop_reg"
+            android:padding="10dp"
+            android:text="213" />
 
         <TextView
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
-            android:text="Password" />
+            android:fontFamily="@font/pop_med"
+            android:text="Password"
+            android:textSize="16sp" />
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edt_bg"
+            android:fontFamily="@font/pop_reg"
+            android:padding="10dp"
+            android:text="213" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg"
+            android:fontFamily="@font/pop_bold"
             android:onClick="trans"
-            android:text="Login" />
+            android:text="Login"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <!--    <Button-->
