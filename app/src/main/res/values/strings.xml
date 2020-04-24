@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Mahinsure</string>
+    <string name="date_format">dd-MMM-yyyy</string>
 </resources>
