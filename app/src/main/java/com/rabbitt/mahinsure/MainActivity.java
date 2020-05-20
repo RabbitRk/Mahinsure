@@ -1,11 +1,9 @@
 package com.rabbitt.mahinsure;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,9 +13,10 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.rabbitt.simplyvolley.VolleyAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,24 +56,21 @@ public class MainActivity extends AppCompatActivity {
         txt = findViewById(R.id.textView);
 
         view = findViewById(R.id.collector);
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        if (!isAnimated)
-        {
+
+        if (!isAnimated) {
             //Animate the falling logo
             topAnim = AnimationUtils.loadAnimation(this, R.anim.fadein);
             txtAnim = AnimationUtils.loadAnimation(this, R.anim.fadeup);
 
-
             //loading the animation
             view.setAnimation(txtAnim);
             imageView.setAnimation(topAnim);
-
 
             //delayed the transition
             handler.postDelayed(runnable, 3000);
@@ -105,24 +101,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.i(TAG, "Main onStop: ");
-        this.finish();
+//        this.finish();
     }
 
     public void trans(View view) {
-            //region Shared animation
 
-            // Shared screen transition
-            Pair[] pairs = new Pair[2];
-            pairs[0] = Pair.create((View) imageView, "imagetrans"); // #imagetrans transition name
-            pairs[1] = Pair.create((View) txt, "texttrans"); // #texttrans transition name
+        VolleyAdapter adapter = new VolleyAdapter(this);
 
-            // Making transition
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, pairs);
+        //region Shared animation
 
-            // Open the next activity
-            Intent intent = new Intent(MainActivity.this, Nextpage.class);
-            startActivity(intent, options.toBundle());
+        // Shared screen transition
+//        Pair[] pairs = new Pair[2];
+//        pairs[0] = Pair.create((View) imageView, "imagetrans"); // #imagetrans transition name
+//        pairs[1] = Pair.create((View) txt, "texttrans"); // #texttrans transition name
+//
+//        // Making transition
+//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, pairs);
+//
+//        // Open the next activity
+//        Intent intent = new Intent(MainActivity.this, HomePage.class);
+//        startActivity(intent, options.toBundle());
+        //endregion
 
-            //endregion
+        startActivity(new Intent(MainActivity.this, HomePage.class));
     }
 }

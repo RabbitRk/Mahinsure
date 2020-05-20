@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SettingsActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="30dp">
+
+        <TextView
+            style="@style/viewParent.headerText"
+            android:fontFamily="@font/open_bold"
+            android:text="Settings" />
+
+        <Switch
+            android:id="@+id/darkModeSwitch"
+            style="@style/settingsText"
+            android:fontFamily="@font/open_bold"
+            android:drawableStart="@drawable/ic_dark_mode"
+            android:text="Dark Mode" />
+
+
+        <TextView
+            android:fontFamily="@font/open_bold"
+            style="@style/viewParent.headerText.settingsMiniTitle"
+            android:text="Notifications"/>
+
+        <Switch
+            style="@style/settingsText"
+            android:checked="true"
+            android:fontFamily="@font/open_bold"
+
+            android:drawableStart="@drawable/ic_notifications"
+            android:text="Notifications" />
+
+
+        <RelativeLayout
+            android:id="@+id/chooseRingtone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/profileCircleImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_notifications_"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:id="@+id/usernameTextView"
+                style="@style/viewParent.headerText"
+                android:text="Notification Ringtone"
+                android:textSize="15sp"
+                android:fontFamily="@font/open_bold"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/profileCircleImageView"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                style="@style/viewParent.headerText"
+                android:text="Ringtone"
+                android:textSize="14sp"
+                android:layout_marginStart="10dp"
+                android:textColor="#5D5C5C"
+                android:fontFamily="@font/open_light"
+                android:layout_below="@id/usernameTextView"
+                android:layout_toEndOf="@id/profileCircleImageView"/>
+
+            <ImageView
+                style="@style/viewParent"
+                android:src="@drawable/ic_right"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+        <TextView
+            style="@style/viewParent.headerText.settingsMiniTitle"
+            android:text="version 0.0.1"
+            android:fontFamily="@font/open_light"
+            android:textAlignment="center"/>
+
+    </LinearLayout>
+</ScrollView>

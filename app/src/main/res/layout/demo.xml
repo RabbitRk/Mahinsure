@@ -17,10 +17,17 @@
         android:padding="15dp"
         android:text="Hello"
         android:textSize="18sp"
-        android:fontFamily="@font/pop_med"
+        android:fontFamily="@font/open_light"
         android:textColor="@color/white"
         android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/rect" />
 
 </LinearLayout>
