@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".Nextpage">
 
     <ImageView
@@ -38,22 +39,34 @@
         android:layout_height="wrap_content"
         android:onClick="photo"
         android:text="Next"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/skim"
-        android:layout_width="match_parent"
-        android:layout_height="351dp"
-        app:layout_constraintBottom_toTopOf="@+id/next"
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/skim"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="351dp"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/next"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/imageView">-->
+    <!--&lt;!&ndash;        <androidx.recyclerview.widget.RecyclerView&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:id="@+id/recyclerView"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_height="wrap_content"/>&ndash;&gt;-->
+
+    <!--      -->
+    <!--    </LinearLayout>-->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view_2"
+        android:layout_width="500dp"
+        android:layout_height="500dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="searching.json"
+        app:lottie_loop="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>
