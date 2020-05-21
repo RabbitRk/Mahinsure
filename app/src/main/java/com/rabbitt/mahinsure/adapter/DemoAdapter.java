@@ -1,6 +1,7 @@
 package com.rabbitt.mahinsure.adapter;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ import com.rabbitt.mahinsure.R;
 import com.rabbitt.mahinsure.model.demo;
 
 import java.util.List;
-
 
 public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.holder>{
 
@@ -49,11 +49,6 @@ public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.holder>{
         return dataModelArrayList.size();
     }
 
-    public interface OnRecyleItemListener
-    {
-        void OnItemClick(int position);
-    }
-
     public class holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView demo;
@@ -64,11 +59,18 @@ public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.holder>{
             this.onRecyleItemListener = mOnRecycleItemListener;
             demo = itemView.findViewById(R.id.refno);
             template = itemView.findViewById(R.id.tem_plate);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            Log.i(TAG, "onClick: Adapter");
             onRecyleItemListener.OnItemClick(getAdapterPosition());
         }
+    }
+
+    public interface OnRecyleItemListener
+    {
+        void OnItemClick(int position);
     }
 }

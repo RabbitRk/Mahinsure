@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rabbitt.mahinsure.adapter.DemoAdapter;
 import com.rabbitt.mahinsure.model.demo;
+import com.rabbitt.mahinsure.model.inspection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +35,13 @@ public class HomePage extends AppCompatActivity implements DemoAdapter.OnRecyleI
 
         recyclerView = findViewById(R.id.pending_recycler);
 
-        for (int i = 0; i <= 10; i++) {
+        for (int i = 0; i <= 2; i++) {
             demo model = new demo();
             model.setData("Reference No: " + i);
             data.add(model);
         }
 
         updaterecyclershit(data);
-
-        Log.i(TAG, "onCreate: ");
     }
 
     private void updaterecyclershit(List<demo> data) {
@@ -55,7 +54,19 @@ public class HomePage extends AppCompatActivity implements DemoAdapter.OnRecyleI
         recyclerView.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void OnItemClick(int position) {
+        Log.i(TAG, "OnItemClick: "+position);
+        Log.i(TAG, "pos " + position);
+        demo model = data.get(position);
+        String data = model.getData();
 
+        Log.i(TAG, "pos " + data);
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("ref_no", data);
+        startActivity(intent);
+
+    }
 
     @Override
     public void onBackPressed() {
@@ -91,8 +102,5 @@ public class HomePage extends AppCompatActivity implements DemoAdapter.OnRecyleI
         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
     }
 
-    @Override
-    public void OnItemClick(int position) {
 
-    }
 }

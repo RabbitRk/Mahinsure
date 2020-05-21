@@ -48,4 +48,7 @@ dependencies {
 
     //circleimageview
     implementation 'de.hdodenhof:circleimageview:3.0.1'
+
+    //spinner
+    implementation 'com.github.arcadefire:nice-spinner:1.4.5'
 }

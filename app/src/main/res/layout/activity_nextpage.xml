@@ -71,7 +71,7 @@
                     android:id="@+id/pending_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="20dp"
+                    android:background="@color/spaceGrey"
                     android:visibility="visible" />
             </LinearLayout>
 
@@ -97,8 +97,7 @@
                     android:id="@+id/finished_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="22dp"
-                    android:layout_marginEnd="22dp"
+                    android:background="@color/spaceGrey"
                     android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>

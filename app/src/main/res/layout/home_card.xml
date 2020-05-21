@@ -8,7 +8,6 @@
     android:layout_margin="5dp"
     app:cardUseCompatPadding="true"
     app:cardElevation="0dp"
-    android:translationZ="5dp"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -31,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/year"
                 style="@style/day_style"
-                android:textSize="22dp"
+                android:textSize="22sp"
                 android:layout_centerHorizontal="true"
                 android:text="10" />
 
