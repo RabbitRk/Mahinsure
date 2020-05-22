@@ -5,6 +5,8 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+
 public class GridSpacingItemDecoration  extends RecyclerView.ItemDecoration{
 
         private int spanCount;
@@ -18,7 +20,7 @@ public class GridSpacingItemDecoration  extends RecyclerView.ItemDecoration{
         }
 
         @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        public void getItemOffsets(@NotNull Rect outRect, @NotNull View view, RecyclerView parent, @NotNull RecyclerView.State state) {
             int position = parent.getChildAdapterPosition(view); // item position
             int column = position % spanCount; // item column
 

@@ -53,4 +53,6 @@ dependencies {
 
     //spinner
     implementation 'com.github.arcadefire:nice-spinner:1.4.5'
+
+    compile 'com.makeramen:roundedimageview:2.3.0'
 }

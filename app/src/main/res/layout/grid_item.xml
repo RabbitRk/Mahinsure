@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_height="wrap_content">
@@ -11,17 +11,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
+        android:maxLines="1"
+        android:padding="5dp"
+        android:fontFamily="@font/open_reg"
+        android:textColor="@color/black"
+        android:ellipsize="end"
         android:text="Photo1"/>
 
-    <ImageView
+<!--    <ImageView-->
+<!--        android:id="@+id/image_taken"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        android:background="@drawable/btn_bg_lite"-->
+<!--        android:src="@drawable/ic_photo"-->
+<!--        android:layout_width="108dp"-->
+<!--        android:layout_height="108dp"/>-->
+
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/image_taken"
-        android:src="@drawable/ic_launcher_background"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/textsub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="Photo1"/>
+        android:layout_height="108dp"
+        android:layout_width="108dp"
+        android:background="@drawable/btn_bg"
+        android:scaleType="fitCenter"
+        app:riv_corner_radius="10dp"
+        app:riv_oval="false" />
+
 </LinearLayout>
+<!--   android:src="@drawable/ic_photo" -->
