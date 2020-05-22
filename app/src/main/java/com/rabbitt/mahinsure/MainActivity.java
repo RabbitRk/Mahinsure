@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.rabbitt.mahinsure.prefs.PrefsManager;
 import com.rabbitt.simplyvolley.VolleyAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -62,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        PrefsManager prefsManager = new PrefsManager(this);
+        if(prefsManager.isFirstTimeLaunch())
+        {
+            startActivity(new Intent(MainActivity.this, HomePage.class));
+            finish();
+        }
 
         if (!isAnimated) {
             //Animate the falling logo
@@ -101,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.i(TAG, "Main onStop: ");
-//        this.finish();
+        this.finish();
     }
 
     public void trans(View view) {

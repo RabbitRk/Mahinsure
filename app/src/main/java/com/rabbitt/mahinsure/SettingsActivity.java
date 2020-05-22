@@ -3,7 +3,9 @@ package com.rabbitt.mahinsure;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
@@ -23,6 +25,10 @@ public class SettingsActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_settings);
 //        //function for enabling dark mode
 //        setDarkModeSwitch();
+    }
+
+    public void pervious(View view) {
+        startActivity(new Intent(SettingsActivity.this, HomePage.class));
     }
 
 //    private void setDarkModeSwitch(){

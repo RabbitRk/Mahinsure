@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rabbitt.mahinsure.adapter.DemoAdapter;
 import com.rabbitt.mahinsure.model.demo;
 import com.rabbitt.mahinsure.model.inspection;
+import com.rabbitt.mahinsure.prefs.PrefsManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,9 @@ public class HomePage extends AppCompatActivity implements DemoAdapter.OnRecyleI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nextpage);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        PrefsManager prefsManager = new PrefsManager(this);
+        prefsManager.setFirstTimeLaunch(true);
 
         recyclerView = findViewById(R.id.pending_recycler);
 

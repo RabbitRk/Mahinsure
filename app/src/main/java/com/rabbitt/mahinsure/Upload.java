@@ -52,11 +52,11 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 public class Upload extends AppCompatActivity {
 
     private static final String TAG = "malu";
-    private static final int PERMISSION_REQUEST_CODE = 200;
 
     Bitmap bitmap;
 
     ImageView imageView;
+    private static final int PERMISSION_REQUEST_CODE = 200;
     String lat, lng;
 
     @Override
@@ -125,12 +125,10 @@ public class Upload extends AppCompatActivity {
         String watermark = "Date: "+formattedDate;
         Log.i(TAG, "mark: "+watermark);
 
-
         canvas.drawText(watermark, 50, 100, paint);
 
         String location = "Lat: "+lat+" Lng: "+lng;
         canvas.drawText(location, 50, h-100, paint);
-
 
         bitmap = result;
         return result;

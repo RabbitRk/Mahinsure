@@ -34,12 +34,22 @@
         </activity>
         <activity android:name=".HomePage" />
 
-        <service android:name=".notification.FirebaseMessengingService"
+        <service
+            android:name=".notification.FirebaseMessengingService"
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        <receiver
+            android:name=".broadcast.InternetBroadCast"
+            tools:ignore="InnerclassSeparator">
+            <intent-filter>
+                <action
+                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                    tools:ignore="BatteryLife" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
