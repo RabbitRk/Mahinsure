@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.rabbitt.mahinsure">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -16,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FinalActivity"></activity>
+        <activity android:name=".FinalActivity" />
         <activity android:name=".PhotoActivity" />
         <activity android:name=".DetailActivity" />
         <activity android:name=".SettingsActivity" />
@@ -32,6 +33,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".HomePage" />
+
+        <service android:name=".notification.FirebaseMessengingService"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

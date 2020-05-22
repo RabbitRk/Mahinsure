@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "625693176627",
+    "firebase_url": "https://mobi-ed39f.firebaseio.com",
+    "project_id": "mobi-ed39f",
+    "storage_bucket": "mobi-ed39f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625693176627:android:894faf600796af5b4b0446",
+        "android_client_info": {
+          "package_name": "com.rabbitt.mahinsure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625693176627-8b3k27j48dtu5rnhlu7hn9gapb6l5isq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAje2L5VvLCbbF_0t69SEirqE6HVdnUMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625693176627-8b3k27j48dtu5rnhlu7hn9gapb6l5isq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
