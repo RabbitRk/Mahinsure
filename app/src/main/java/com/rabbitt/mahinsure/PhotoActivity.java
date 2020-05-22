@@ -37,36 +37,33 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
     private static final String TAG = "malu";
 
     private Uri imageUri;
-    //    private ImageView image;
+
     GridAdapter customAdapter;
     List<grid> events;
     int position = 0;
     RecyclerView recyclerView;
-//    ArrayList personNames = new ArrayList<>(Arrays.asList("Chassis", "Front number plate", "Rear image", "Front Bumper", "Rear Bumper", "Front left corner", "Front right corner", "Left side", "Right side", "Left QTR panel", "Right QTR panel", "Engine", "Chassis plate", "Dicky open", "Under chassis", "Dashboard", "Odometer", "CNG LPG kit", "RC copy", "Pre-insurance", "Dents & Scratches", "Dents & Scratches", "Dents & Scratches"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
 
-//        image = findViewById(R.id.imageView);
-
         int spanCount = 3; // 3 columns
         int spacing = 10; // 50px
+
         // get the reference of RecyclerView
         recyclerView = findViewById(R.id.grid_recycler);
+
         // set a GridLayoutManager with 3 number of columns , horizontal gravity and false value for reverseLayout to show the items from start to end
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 3, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
+
         //  call the constructor of CustomAdapter to send the reference and data to Adapter
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
 
         //region under testing
-//        List<String> eventName = new ArrayList<>();
-
         GridDataAdpater recyclerData = new GridDataAdpater(this);
         events = recyclerData.getEventList();
-
         //endregion
 
         customAdapter = new GridAdapter(PhotoActivity.this, events, this);
@@ -114,9 +111,7 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
                         Log.i(TAG, ">>>>>>>>>Testing: "+model_.getEvent_name()+"  "+model_.getImage());
                     }
 
-
                     customAdapter.notifyDataSetChanged();
-
 
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
@@ -141,14 +136,6 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
 
         this.position = position;
 
-//        grid model = events.get(position);
-////        String data = model.getDays();
-//        model.setImage(imageUri);
-////        events.set(position, model.setImage(imageUri));
-//        customAdapter.notifyItemChanged(position);
-
-//        customAdapter
-//        customAdapter.notifyItemChanged(position);
         Pix.start(this, Options.init().setRequestCode(100));
     }
 }
