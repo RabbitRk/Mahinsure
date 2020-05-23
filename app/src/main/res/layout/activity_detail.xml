@@ -55,6 +55,7 @@
                 android:background="@drawable/btn_bg"
                 android:fontFamily="@font/open_semi"
                 android:text="Inspect"
+                android:onClick="deleterealm"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="18sp" />

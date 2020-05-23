@@ -22,8 +22,7 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.i("remote", "Data Payload: " + remoteMessage.getData());
             try {
-                Map<String, String> params = remoteMessage.getData();
-                JSONObject json = new JSONObject(params);
+                JSONObject json = new JSONObject(remoteMessage.getData().toString());
                 Log.i(TAG, "onMessageReceived: " + json);
                 sendPushNotification(json);
             } catch (Exception e) {
@@ -34,8 +33,11 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
     }
 
     private void sendPushNotification(JSONObject json) {
+
         NotificationHelper no = new NotificationHelper(this);
         no.createNotification("New Inspection");
+        new RealmHelper(this).realminsert(json);
+
     }
 
     @Override

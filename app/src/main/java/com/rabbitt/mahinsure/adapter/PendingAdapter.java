@@ -14,17 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rabbitt.mahinsure.HomePage;
 import com.rabbitt.mahinsure.R;
 import com.rabbitt.mahinsure.model.demo;
+import com.rabbitt.mahinsure.model.insp_loop;
 
 import java.util.List;
 
-public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.holder>{
+public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.holder>{
 
     private static final String TAG = "maluk";
-    private List<demo> dataModelArrayList;
+    private List<insp_loop> dataModelArrayList;
     private HomePage context;
     private OnRecyleItemListener mOnRecycleItemListener;
 
-    public DemoAdapter(List<demo> dataModelArrayList, HomePage context, OnRecyleItemListener mOnRecycleItemListener) {
+    public PendingAdapter(List<insp_loop> dataModelArrayList, HomePage context, OnRecyleItemListener mOnRecycleItemListener) {
         this.dataModelArrayList = dataModelArrayList;
         this.context = context;
         this.mOnRecycleItemListener = mOnRecycleItemListener;
@@ -32,16 +33,23 @@ public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.holder>{
 
     @NonNull
     @Override
-    public DemoAdapter.holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PendingAdapter.holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_card, null);
         return new holder(view, mOnRecycleItemListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DemoAdapter.holder holder, int position) {
-        demo dataModel = dataModelArrayList.get(position);
-        holder.template.setBackgroundColor(Color.GREEN);
-        holder.demo.setText(dataModel.getData());
+    public void onBindViewHolder(@NonNull PendingAdapter.holder holder, int position) {
+        insp_loop dataModel = dataModelArrayList.get(position);
+
+        holder.template.setBackgroundResource(dataModel.getColor() == 1 ? R.color.warning : R.color.colorPrimary);
+
+        holder.ref_no.setText(dataModel.getRef_no());
+        holder.v_no.setText(dataModel.getV_no());
+        holder.cus_name.setText(dataModel.getCus_name());
+        holder.date.setText(dataModel.getDate());
+        holder.month.setText(dataModel.getMonth());
+        holder.year.setText(dataModel.getYear());
     }
 
     @Override
@@ -51,13 +59,20 @@ public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.holder>{
 
     public class holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView demo;
+        TextView ref_no, v_no, cus_name;
+        TextView date, month, year;
         View template;
         OnRecyleItemListener onRecyleItemListener;
+
         public holder(@NonNull View itemView, OnRecyleItemListener mOnRecycleItemListener) {
             super(itemView);
             this.onRecyleItemListener = mOnRecycleItemListener;
-            demo = itemView.findViewById(R.id.refno);
+            ref_no = itemView.findViewById(R.id.refno);
+            v_no = itemView.findViewById(R.id.vehi_txt);
+            cus_name = itemView.findViewById(R.id.cus_txt);
+            year = itemView.findViewById(R.id.year);
+            month = itemView.findViewById(R.id.month);
+            date = itemView.findViewById(R.id.day);
             template = itemView.findViewById(R.id.tem_plate);
             itemView.setOnClickListener(this);
         }

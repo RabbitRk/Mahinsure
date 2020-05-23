@@ -5,29 +5,31 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.rabbitt.mahinsure.adapter.DemoAdapter;
-import com.rabbitt.mahinsure.model.demo;
+import com.rabbitt.mahinsure.adapter.PendingAdapter;
+import com.rabbitt.mahinsure.model.insp_loop;
 import com.rabbitt.mahinsure.model.inspection;
 import com.rabbitt.mahinsure.prefs.PrefsManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePage extends AppCompatActivity implements DemoAdapter.OnRecyleItemListener {
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
+
+public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecyleItemListener {
 
     private static final String TAG = "malu";
 
     RecyclerView recyclerView;
 
-    DemoAdapter recycleadapter;
-    private List<demo> data = new ArrayList<>();
+    PendingAdapter recycleadapter;
+    private List<insp_loop> data = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +41,40 @@ public class HomePage extends AppCompatActivity implements DemoAdapter.OnRecyleI
 
         recyclerView = findViewById(R.id.pending_recycler);
 
-        for (int i = 0; i <= 2; i++) {
-            demo model = new demo();
-            model.setData("Reference No: " + i);
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<inspection> entries;
+        entries = realm.where(inspection.class).findAll();
+
+        for (inspection ins : entries) {
+            insp_loop model = new insp_loop();
+            model.setRef_no(ins.getRef_no());
+            model.setV_no(ins.getV_no());
+            model.setCus_name(ins.getCus_name());
+            model.setDate(ins.getDate());
+            model.setYear(ins.getYear());
+            model.setMonth(ins.getMonth());
+            model.setColor(ins.getColor());
             data.add(model);
         }
+
+        entries.addChangeListener(new RealmChangeListener<RealmResults<inspection>>() {
+            @Override
+            public void onChange(RealmResults<inspection> results) {
+                for (inspection ex : results)
+                {
+                    Log.i(TAG, "onChange: "+ex.getRef_no());
+                }
+                Log.i(TAG, "The size is: " + results.size());
+            }
+        });
 
         SharedPreferences shrp = getSharedPreferences(Config.TOKEN_PREF, MODE_PRIVATE);
         Log.i(TAG, "Token>>>>>>>>: "+shrp.getString("token","Null"));
         updaterecyclershit(data);
     }
 
-    private void updaterecyclershit(List<demo> data) {
-        recycleadapter = new DemoAdapter(data, this,  this);
+    private void updaterecyclershit(List<insp_loop> data) {
+        recycleadapter = new PendingAdapter(data, this,  this);
         LinearLayoutManager reLayout = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(reLayout);
         reLayout.setOrientation(RecyclerView.VERTICAL);
@@ -64,8 +87,8 @@ public class HomePage extends AppCompatActivity implements DemoAdapter.OnRecyleI
     public void OnItemClick(int position) {
         Log.i(TAG, "OnItemClick: "+position);
         Log.i(TAG, "pos " + position);
-        demo model = data.get(position);
-        String data = model.getData();
+        insp_loop model = data.get(position);
+        String data = model.getRef_no();
 
         Log.i(TAG, "pos " + data);
         Intent intent = new Intent(this, DetailActivity.class);
