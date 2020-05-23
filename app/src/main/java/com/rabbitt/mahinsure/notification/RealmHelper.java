@@ -44,6 +44,7 @@ public class RealmHelper {
                     ins.setYear(data.getString("year"));
                     ins.setDate_(toDate(data.getString("date_")));
                     ins.setColor(1);
+                    Log.i(TAG, "execute: "+toDate(data.getString("date_")));
                 }
                 catch(Exception e)
                 {

@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
+            android:tint="@color/black"
             android:src="@drawable/ic_arrow_back" />
 
         <TextView
@@ -57,7 +58,7 @@
                 android:text="Inspect"
                 android:onClick="deleterealm"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/button_white"
                 android:textSize="18sp" />
         </LinearLayout>
     </ScrollView>

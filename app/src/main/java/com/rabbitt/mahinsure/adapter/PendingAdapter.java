@@ -15,17 +15,18 @@ import com.rabbitt.mahinsure.HomePage;
 import com.rabbitt.mahinsure.R;
 import com.rabbitt.mahinsure.model.demo;
 import com.rabbitt.mahinsure.model.insp_loop;
+import com.rabbitt.mahinsure.model.inspection;
 
 import java.util.List;
 
 public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.holder>{
 
     private static final String TAG = "maluk";
-    private List<insp_loop> dataModelArrayList;
+    private List<inspection> dataModelArrayList;
     private HomePage context;
     private OnRecyleItemListener mOnRecycleItemListener;
 
-    public PendingAdapter(List<insp_loop> dataModelArrayList, HomePage context, OnRecyleItemListener mOnRecycleItemListener) {
+    public PendingAdapter(List<inspection> dataModelArrayList, HomePage context, OnRecyleItemListener mOnRecycleItemListener) {
         this.dataModelArrayList = dataModelArrayList;
         this.context = context;
         this.mOnRecycleItemListener = mOnRecycleItemListener;
@@ -40,7 +41,7 @@ public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.holder>{
 
     @Override
     public void onBindViewHolder(@NonNull PendingAdapter.holder holder, int position) {
-        insp_loop dataModel = dataModelArrayList.get(position);
+        inspection dataModel = dataModelArrayList.get(position);
 
         holder.template.setBackgroundResource(dataModel.getColor() == 1 ? R.color.warning : R.color.colorPrimary);
 

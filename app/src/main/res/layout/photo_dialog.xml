@@ -31,7 +31,7 @@
                 android:fontFamily="@font/open_reg"
                 android:gravity="center"
                 android:text="Photos will be removed!"
-                android:textColor="@color/white"
+                android:textColor="@color/button_white"
                 android:textSize="16dp" />
 
             <TextView
@@ -44,7 +44,7 @@
                 android:gravity="center"
                 android:layout_below="@+id/text"
                 android:text="Are you sure?"
-                android:textColor="@color/white"
+                android:textColor="@color/button_white"
                 android:textSize="16dp" />
 
             <LinearLayout

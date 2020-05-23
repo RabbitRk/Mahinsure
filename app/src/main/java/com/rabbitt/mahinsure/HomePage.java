@@ -7,12 +7,14 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rabbitt.mahinsure.adapter.PendingAdapter;
 import com.rabbitt.mahinsure.model.insp_loop;
 import com.rabbitt.mahinsure.model.inspection;
+import com.rabbitt.mahinsure.prefs.DarkModePrefManager;
 import com.rabbitt.mahinsure.prefs.PrefsManager;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
     RecyclerView recyclerView;
 
     PendingAdapter recycleadapter;
-    private List<insp_loop> data = new ArrayList<>();
+    private List<inspection> data = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,11 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
         PrefsManager prefsManager = new PrefsManager(this);
         prefsManager.setFirstTimeLaunch(true);
 
+//        DarkModePrefManager darkModePrefManager = new DarkModePrefManager(this);
+//        darkModePrefManager.setDarkMode(!darkModePrefManager.isNightMode());
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//        recreate();
+
         recyclerView = findViewById(R.id.pending_recycler);
 
         Realm realm = Realm.getDefaultInstance();
@@ -46,7 +53,7 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
         entries = realm.where(inspection.class).findAll();
 
         for (inspection ins : entries) {
-            insp_loop model = new insp_loop();
+            inspection model = new inspection();
             model.setRef_no(ins.getRef_no());
             model.setV_no(ins.getV_no());
             model.setCus_name(ins.getCus_name());
@@ -73,7 +80,7 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
         updaterecyclershit(data);
     }
 
-    private void updaterecyclershit(List<insp_loop> data) {
+    private void updaterecyclershit(List<inspection> data) {
         recycleadapter = new PendingAdapter(data, this,  this);
         LinearLayoutManager reLayout = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(reLayout);
@@ -87,7 +94,7 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
     public void OnItemClick(int position) {
         Log.i(TAG, "OnItemClick: "+position);
         Log.i(TAG, "pos " + position);
-        insp_loop model = data.get(position);
+        inspection model = data.get(position);
         String data = model.getRef_no();
 
         Log.i(TAG, "pos " + data);
@@ -106,6 +113,9 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "onStart: ");
+        if(new DarkModePrefManager(this).isNightMode()){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
     }
 
     @Override

@@ -5,6 +5,7 @@
     <color name="colorAccent">#00B0FF</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="button_white">#FFFFFF</color>
     <color name="black">#000000</color>
 
     <color name="spaceGrey">#DEDEDE</color>
@@ -15,6 +16,8 @@
     <color name="danger">#FD2727</color>
 
     <color name="colorAccentLite">#2500B0FF</color>
+
+
 
 
 

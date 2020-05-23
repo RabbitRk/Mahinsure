@@ -37,6 +37,7 @@
             android:layout_margin="22dp"
             android:onClick="settingpage"
             android:padding="10dp"
+            android:tint="@color/black"
             android:src="@drawable/ic_settings" />
     </RelativeLayout>
 
