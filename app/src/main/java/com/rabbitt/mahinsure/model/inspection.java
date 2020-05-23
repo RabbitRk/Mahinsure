@@ -1,9 +1,12 @@
 package com.rabbitt.mahinsure.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class inspection extends RealmObject {
-    private String year, date, month, ref_no, v_no, cus_name, color;
+    private String year, date, month, v_no, cus_name, color;
+    @PrimaryKey
+    private String ref_no;
 
     public String getYear() {
         return year;

@@ -25,11 +25,17 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
                 Map<String, String> params = remoteMessage.getData();
                 JSONObject json = new JSONObject(params);
                 Log.i(TAG, "onMessageReceived: " + json);
+                sendPushNotification(json);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("remote", "Exception: " + e.getMessage() +e.toString());
             }
         }
+    }
+
+    private void sendPushNotification(JSONObject json) {
+        NotificationHelper no = new NotificationHelper(this);
+        no.createNotification("New Inspection");
     }
 
     @Override

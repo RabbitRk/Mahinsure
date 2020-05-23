@@ -1,6 +1,7 @@
 package com.rabbitt.mahinsure;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +45,8 @@ public class HomePage extends AppCompatActivity implements DemoAdapter.OnRecyleI
             data.add(model);
         }
 
+        SharedPreferences shrp = getSharedPreferences(Config.TOKEN_PREF, MODE_PRIVATE);
+        Log.i(TAG, "Token>>>>>>>>: "+shrp.getString("token","Null"));
         updaterecyclershit(data);
     }
 
@@ -68,7 +71,6 @@ public class HomePage extends AppCompatActivity implements DemoAdapter.OnRecyleI
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra("ref_no", data);
         startActivity(intent);
-
     }
 
     @Override

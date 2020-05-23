@@ -29,6 +29,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void pervious(View view) {
         startActivity(new Intent(SettingsActivity.this, HomePage.class));
+        finish();
+
     }
 
 //    private void setDarkModeSwitch(){

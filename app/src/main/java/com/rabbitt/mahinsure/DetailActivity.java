@@ -7,12 +7,18 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.rabbitt.simplyvolley.VolleyAdapter;
+
 public class DetailActivity extends AppCompatActivity {
+
+    VolleyAdapter volleyAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+
 
     }
 

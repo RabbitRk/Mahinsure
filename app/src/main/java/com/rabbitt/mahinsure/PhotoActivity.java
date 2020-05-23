@@ -149,10 +149,6 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
 
                     Log.i(TAG, "onActivityResult: " + position + "   " + model.getEvent_name());
 
-//                    for (grid model_ : events) {
-//                        Log.i(TAG, ">>>>>>>>>Testing: " + model_.getEvent_name() + "  " + model_.getImage());
-//                    }
-
                     customAdapter.notifyDataSetChanged();
 
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {

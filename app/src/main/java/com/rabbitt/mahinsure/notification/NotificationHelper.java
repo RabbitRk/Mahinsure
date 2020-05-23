@@ -24,6 +24,7 @@ public class NotificationHelper {
 
     public void createNotification(String content)
     {
+
         Intent intent = new Intent(mContext , HomePage.class);
 
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -34,12 +35,10 @@ public class NotificationHelper {
 
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
-        mBuilder.setSmallIcon(R.mipmap.ic_launcher);
-        mBuilder.setContentTitle("Healthybow")
+        mBuilder.setContentTitle("MobiInspect")
                 .setContentText(content)
                 .setAutoCancel(false)
                 .setSmallIcon(R.drawable.ic_launcher_background)
-                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setContentIntent(resultPendingIntent);
 
         NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
