@@ -5,17 +5,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.rabbitt.mahinsure.adapter.FinishedAdapter;
 import com.rabbitt.mahinsure.adapter.PendingAdapter;
-import com.rabbitt.mahinsure.model.insp_loop;
 import com.rabbitt.mahinsure.model.inspection;
 import com.rabbitt.mahinsure.prefs.DarkModePrefManager;
 import com.rabbitt.mahinsure.prefs.PrefsManager;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +27,18 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
-public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecyleItemListener {
+public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecyleItemListener, FinishedAdapter.OnRecyleItemListener {
 
-    private static final String TAG = "malu";
+    private static final String TAG = "maluHome";
 
-    RecyclerView recyclerView;
+    RecyclerView recyclerView, finishedView;
 
     PendingAdapter recycleadapter;
-    private List<inspection> data = new ArrayList<>();
+    FinishedAdapter finishedadapter;
+
+    private List<inspection> pending = new ArrayList<>();
+    private List<inspection> finished = new ArrayList<>();
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +54,56 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
 //        recreate();
 
         recyclerView = findViewById(R.id.pending_recycler);
+        finishedView = findViewById(R.id.finished_recycler);
 
-        Realm realm = Realm.getDefaultInstance();
+        realm = Realm.getDefaultInstance();
+
         RealmResults<inspection> entries;
         entries = realm.where(inspection.class).findAll();
+        entries.addChangeListener(new RealmChangeListener<RealmResults<inspection>>() {
+            @Override
+            public void onChange(@NotNull RealmResults<inspection> results) {
+
+                Log.i(TAG, "onChange: " + results.toString());
+
+                updaterecyclershit(getPendingInspection());
+                updaterecyclershit2(getFinishedInspection());
+            }
+        });
+
+        SharedPreferences shrp = getSharedPreferences(Config.TOKEN_PREF, MODE_PRIVATE);
+        Log.i(TAG, "Token>>>>>>>>: " + shrp.getString("token", "Null"));
+
+        updaterecyclershit(getPendingInspection());
+        updaterecyclershit2(getFinishedInspection());
+    }
+
+    private void updaterecyclershit(List<inspection> data) {
+        recycleadapter = new PendingAdapter(data, this, this);
+        LinearLayoutManager reLayout = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(reLayout);
+        reLayout.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setAdapter(recycleadapter);
+        recycleadapter.notifyDataSetChanged();
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void updaterecyclershit2(List<inspection> data) {
+        finishedadapter = new FinishedAdapter(data, this, this);
+        LinearLayoutManager reLayout = new LinearLayoutManager(this);
+        finishedView.setLayoutManager(reLayout);
+        reLayout.setOrientation(RecyclerView.VERTICAL);
+        finishedView.setAdapter(finishedadapter);
+        finishedadapter.notifyDataSetChanged();
+        finishedView.setVisibility(View.VISIBLE);
+    }
+
+    public List<inspection> getPendingInspection() {
+        pending.clear();
+        if (recycleadapter != null)
+            recycleadapter.notifyDataSetChanged();
+        RealmResults<inspection> entries;
+        entries = realm.where(inspection.class).equalTo("color", 1).or().equalTo("color", 2).findAll();
 
         for (inspection ins : entries) {
             inspection model = new inspection();
@@ -61,46 +114,55 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
             model.setYear(ins.getYear());
             model.setMonth(ins.getMonth());
             model.setColor(ins.getColor());
-            data.add(model);
+            pending.add(model);
         }
-
-        entries.addChangeListener(new RealmChangeListener<RealmResults<inspection>>() {
-            @Override
-            public void onChange(RealmResults<inspection> results) {
-                for (inspection ex : results)
-                {
-                    Log.i(TAG, "onChange: "+ex.getRef_no());
-                }
-                Log.i(TAG, "The size is: " + results.size());
-            }
-        });
-
-        SharedPreferences shrp = getSharedPreferences(Config.TOKEN_PREF, MODE_PRIVATE);
-        Log.i(TAG, "Token>>>>>>>>: "+shrp.getString("token","Null"));
-        updaterecyclershit(data);
+        return pending;
     }
 
-    private void updaterecyclershit(List<inspection> data) {
-        recycleadapter = new PendingAdapter(data, this,  this);
-        LinearLayoutManager reLayout = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(reLayout);
-        reLayout.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setAdapter(recycleadapter);
-        recycleadapter.notifyDataSetChanged();
-        recyclerView.setVisibility(View.VISIBLE);
+    public List<inspection> getFinishedInspection() {
+        finished.clear();
+        if (finishedadapter != null)
+            finishedadapter.notifyDataSetChanged();
+        // Getting finished inspection
+        RealmResults<inspection> finish;
+        finish = realm.where(inspection.class).equalTo("color", 0).findAll();
+
+        for (inspection ins : finish) {
+            inspection model = new inspection();
+            model.setRef_no(ins.getRef_no());
+            model.setV_no(ins.getV_no());
+            model.setCus_name(ins.getCus_name());
+            model.setDate(ins.getDate());
+            model.setYear(ins.getYear());
+            model.setMonth(ins.getMonth());
+            model.setColor(ins.getColor());
+            finished.add(model);
+        }
+
+        return finished;
     }
 
     @Override
     public void OnItemClick(int position) {
-        Log.i(TAG, "OnItemClick: "+position);
+        Log.i(TAG, "OnItemClick: " + position);
         Log.i(TAG, "pos " + position);
-        inspection model = data.get(position);
+        inspection model = pending.get(position);
         String data = model.getRef_no();
+        int boo = model.getColor();
+        if (boo == 1) {
+            Log.i(TAG, "pos " + data);
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra("ref_no", data);
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(this, "Your already finished this inspection", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-        Log.i(TAG, "pos " + data);
-        Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra("ref_no", data);
-        startActivity(intent);
+    @Override
+    public void OnItemClickFinised(int position) {
+        Toast.makeText(this, "Your already finished", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -113,7 +175,7 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "onStart: ");
-        if(new DarkModePrefManager(this).isNightMode()){
+        if (new DarkModePrefManager(this).isNightMode()) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
     }
@@ -139,6 +201,4 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
     public void settingpage(View view) {
         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
     }
-
-
 }

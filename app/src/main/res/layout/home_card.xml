@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     android:background="@drawable/plain"
     android:orientation="horizontal"
-    app:cardCornerRadius="10dp"
-    android:layout_margin="5dp"
-    app:cardUseCompatPadding="true"
-    app:cardElevation="0dp"
     app:cardBackgroundColor="@color/white"
-    android:layout_height="wrap_content">
+    app:cardCornerRadius="10dp"
+    app:cardElevation="0dp"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -17,99 +17,136 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_margin="6dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="6dp">
 
             <TextView
                 android:id="@+id/year"
-                android:text="2020"
-                style="@style/year_style" />
+                style="@style/year_style"
+                android:text="2020" />
 
             <TextView
                 android:id="@+id/day"
+                style="@style/day_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/year"
-                style="@style/day_style"
-                android:textSize="22sp"
                 android:layout_centerHorizontal="true"
-                android:text="10" />
+                android:text="10"
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/month"
+                style="@style/year_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/day"
                 android:layout_centerHorizontal="true"
-                style="@style/year_style"
                 android:text="JUN" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="3dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="3dp">
 
             <TextView
                 android:id="@+id/l_ref"
-                android:text="Reference No: "
-                style="@style/lbl" />
+                style="@style/lbl"
+                android:text="Reference No: " />
 
             <TextView
                 android:id="@+id/refno"
-                android:text="#1234"
+                style="@style/con"
                 android:layout_toEndOf="@+id/l_ref"
-                style="@style/con" />
+                android:text="#1234" />
 
             <TextView
                 android:id="@+id/l_veh"
+                style="@style/lbl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/l_ref"
-                style="@style/lbl"
                 android:text="Vehicle Number:" />
 
             <TextView
                 android:id="@+id/vehi_txt"
-                android:text="TN 31 AB 1234"
-                android:layout_toEndOf="@+id/l_veh"
+                style="@style/con"
                 android:layout_below="@+id/l_ref"
-                style="@style/con" />
-
+                android:layout_toEndOf="@+id/l_veh"
+                android:text="TN 31 AB 1234" />
 
             <TextView
                 android:id="@+id/l_name"
+                style="@style/lbl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/l_veh"
-                style="@style/lbl"
                 android:text="Customer name: " />
 
             <TextView
                 android:id="@+id/cus_txt"
-                android:text="John"
-                android:ellipsize="end"
-                android:layout_toEndOf="@+id/l_name"
+                style="@style/con"
                 android:layout_below="@+id/l_veh"
-                style="@style/con" />
+                android:layout_toEndOf="@+id/l_name"
+                android:ellipsize="end"
+                android:text="John" />
 
+            <LinearLayout
+                android:id="@+id/submit_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/l_name"
+                android:visibility="gone">
 
+                <TextView
+                    style="@style/lbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Submitted on: " />
+
+                <TextView
+                    android:id="@+id/submited_on"
+                    style="@style/con"
+                    android:ellipsize="end"
+                    android:text="12 JUN 2020" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/approved_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/submit_layout"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/l_app"
+                    style="@style/lbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Approved on: " />
+
+                <TextView
+                    android:id="@+id/approved"
+                    style="@style/con"
+                    android:ellipsize="end"
+                    android:text="12 JUN 2020" />
+            </LinearLayout>
         </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-<!--        <TextView-->
-<!--            android:layout_centerInParent="true"-->
-<!--            android:text="Waiting"-->
-<!--            style="@style/template"/>-->
-    <View
-        android:id="@+id/tem_plate"
-        android:layout_width="20dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/template" />
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/tem_plate"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/template" />
+        </RelativeLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

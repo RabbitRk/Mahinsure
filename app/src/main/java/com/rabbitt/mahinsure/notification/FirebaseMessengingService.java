@@ -35,8 +35,26 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
     private void sendPushNotification(JSONObject json) {
 
         NotificationHelper no = new NotificationHelper(this);
-        no.createNotification("New Inspection");
-        new RealmHelper(this).realminsert(json);
+        try
+        {
+            String data = json.get("data").toString();
+            switch (data)
+            {
+                case "new":
+                    no.createNotification("New Inspection");
+                    new RealmHelper(this).realminsert(json);
+                    break;
+                case "update":
+                    no.createNotification("Inspection Processing");
+                    new RealmHelper(this).realmupdate(json);
+                    break;
+            }
+        }
+        catch(Exception e)
+        {
+            Log.i(TAG, "Exception: "+e.toString());
+        }
+
 
     }
 

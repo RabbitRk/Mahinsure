@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".HomePage">
-
     <RelativeLayout
         android:id="@+id/top"
         android:layout_width="wrap_content"
@@ -98,45 +97,9 @@
                     android:id="@+id/finished_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/spaceGrey"
-                    android:visibility="gone" />
+                    android:background="@color/colorAccentLite"
+                    android:visibility="visible" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-    <!--    <Button-->
-    <!--        android:id="@+id/next"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:onClick="photo"-->
-    <!--        android:text="Next"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent" />-->
-
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/skim"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="351dp"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/next"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/imageView">-->
-    <!--&lt;!&ndash;        <androidx.recyclerview.widget.RecyclerView&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:id="@+id/recyclerView"&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:layout_height="wrap_content"/>&ndash;&gt;-->
-
-    <!--      -->
-    <!--    </LinearLayout>-->
-    <!--    <com.airbnb.lottie.LottieAnimationView-->
-    <!--        android:id="@+id/animation_view_2"-->
-    <!--        android:layout_width="500dp"-->
-    <!--        android:layout_height="500dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:lottie_autoPlay="true"-->
-    <!--        app:lottie_fileName="searching.json"-->
-    <!--        app:lottie_loop="true" />-->
 </RelativeLayout>
