@@ -6,11 +6,20 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class inspection extends RealmObject {
-    private String year, date, month, v_no, cus_name;
+    private String year, date, month, v_no, cus_name, content;
     private int color;
     private Date date_;
     @PrimaryKey
     private String ref_no;
+
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public String getYear() {
         return year;

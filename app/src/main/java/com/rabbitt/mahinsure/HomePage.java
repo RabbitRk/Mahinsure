@@ -103,7 +103,7 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
         if (recycleadapter != null)
             recycleadapter.notifyDataSetChanged();
         RealmResults<inspection> entries;
-        entries = realm.where(inspection.class).equalTo("color", 1).or().equalTo("color", 2).findAll();
+        entries = realm.where(inspection.class).notEqualTo("color", 0).findAll();
 
         for (inspection ins : entries) {
             inspection model = new inspection();
@@ -114,6 +114,7 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
             model.setYear(ins.getYear());
             model.setMonth(ins.getMonth());
             model.setColor(ins.getColor());
+            model.setContent(ins.getContent());
             pending.add(model);
         }
         return pending;
@@ -149,15 +150,32 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
         inspection model = pending.get(position);
         String data = model.getRef_no();
         int boo = model.getColor();
-        if (boo == 1) {
-            Log.i(TAG, "pos " + data);
-            Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra("ref_no", data);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(this, "Your already finished this inspection", Toast.LENGTH_SHORT).show();
+
+        try
+        {
+            switch (boo)
+            {
+                case 1:
+                    Log.i(TAG, "pos " + data);
+                    Intent intent = new Intent(this, DetailActivity.class);
+                    intent.putExtra("ref_no", data);
+                    startActivity(intent);
+                    finish();
+                    break;
+                case -1:
+                    Toast.makeText(this, "correction   "+model.getContent(), Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(this, "Your already finished this inspection", Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
+        catch(Exception e)
+        {
+            Log.i(TAG, "Exception: "+e.toString());
+        }
+
+
     }
 
     @Override

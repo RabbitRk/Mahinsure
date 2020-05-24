@@ -8,6 +8,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.rabbitt.mahinsure.Config;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -22,7 +23,8 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.i("remote", "Data Payload: " + remoteMessage.getData());
             try {
-                JSONObject json = new JSONObject(remoteMessage.getData().toString());
+                Map<String, String> params = remoteMessage.getData();
+                JSONObject json = new JSONObject(params);
                 Log.i(TAG, "onMessageReceived: " + json);
                 sendPushNotification(json);
             } catch (Exception e) {
@@ -38,6 +40,7 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
         try
         {
             String data = json.get("data").toString();
+
             switch (data)
             {
                 case "new":
@@ -47,6 +50,10 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
                 case "update":
                     no.createNotification("Inspection Processing");
                     new RealmHelper(this).realmupdate(json);
+                    break;
+                case "alert":
+                    no.createNotification("Correction on inspection");
+                    new RealmHelper(this).realmcorrection(json);
                     break;
             }
         }

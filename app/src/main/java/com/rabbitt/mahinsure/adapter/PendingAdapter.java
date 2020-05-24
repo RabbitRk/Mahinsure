@@ -21,7 +21,7 @@ import java.util.List;
 
 public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.holder>{
 
-    private static final String TAG = "maluk";
+    private static final String TAG = "rkd";
     private List<inspection> dataModelArrayList;
     private HomePage context;
     private OnRecyleItemListener mOnRecycleItemListener;
@@ -43,14 +43,27 @@ public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.holder>{
     public void onBindViewHolder(@NonNull PendingAdapter.holder holder, int position) {
         inspection dataModel = dataModelArrayList.get(position);
 
-        holder.template.setBackgroundResource(dataModel.getColor() == 1 ? R.color.warning : R.color.colorPrimary);
+        Log.i(TAG, "onBindViewHolder: "+dataModel.getColor());
+        switch (dataModel.getColor())
+        {
+            case 1:
+                holder.template.setBackgroundResource(R.color.warning);
+                break;
+            case -1:
+                holder.template.setBackgroundResource(R.color.danger);
+                break;
+            case 2:
+                holder.template.setBackgroundResource(R.color.colorPrimary);
+                break;
+        }
+
+//        holder.template.setBackgroundResource(dataModel.getColor() == 1 ? R.color.warning : R.color.colorPrimary);
 
         if (dataModel.getColor() == 2)
         {
             holder.sub.setVisibility(View.VISIBLE);
             holder.submitted.setText(String.valueOf(dataModel.getDate_()));
         }
-
 
         holder.ref_no.setText(dataModel.getRef_no());
         holder.v_no.setText(dataModel.getV_no());
