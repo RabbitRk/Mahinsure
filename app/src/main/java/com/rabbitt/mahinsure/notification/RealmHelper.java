@@ -43,10 +43,12 @@ public class RealmHelper {
                     ins.setDate(json.get("date").toString());
                     ins.setMonth(json.get("month").toString());
                     ins.setYear(json.get("year").toString());
-                    ins.setDate_(toDate(json.get("date_").toString()));
+                    ins.setRec(json.get("rec").toString());
+                    ins.setSub("NULL");
+                    ins.setApp("NULL");
                     ins.setContent("NIL");
                     ins.setColor(1);
-                    Log.i(TAG, "execute: " + toDate(json.get("date_").toString()));
+                    Log.i(TAG, "execute: " +  json.get("date_").toString());
                 } catch (Exception e) {
                     Log.i(TAG, "Exception: " + e.getMessage());
                 }
@@ -61,6 +63,7 @@ public class RealmHelper {
 
             Log.i(TAG, "realmupdate: " + json.get("ref_no").toString());
 
+            final int i = Integer.parseInt(json.get("color").toString());
             realm = Realm.getDefaultInstance();
 
             realm.executeTransaction(new Realm.Transaction() {
@@ -68,6 +71,10 @@ public class RealmHelper {
                 public void execute(@NotNull Realm realm) {
                     try {
                         RealmResults<inspection> persons = realm.where(inspection.class).equalTo("ref_no", json.get("ref_no").toString()).findAll();
+                        if (i == 0)
+                        {
+                            persons.setString("app", json.get("date_").toString());
+                        }
                         persons.setInt("color", Integer.parseInt(json.get("color").toString()));
                     } catch (Exception e) {
                         Log.i(TAG, "Exception: " + e.getMessage());
@@ -80,20 +87,6 @@ public class RealmHelper {
             Log.i(TAG, "realmupdate: " + e.toString());
         }
     }
-
-    public Date toDate(String dateString) {
-        Date date = null;
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        try {
-            date = formatter.parse(dateString);
-            Log.e("Print result: ", String.valueOf(date));
-
-        } catch (ParseException e1) {
-            e1.printStackTrace();
-        }
-        return date;
-    }
-
 
     public void realmcorrection(final JSONObject json) {
         try {

@@ -218,5 +218,6 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
 
     public void settingpage(View view) {
         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+        finish();
     }
 }

@@ -43,6 +43,7 @@ import com.rabbitt.mahinsure.adapter.GridDataAdpater;
 import com.rabbitt.mahinsure.broadcast.InternetBroadCast;
 import com.rabbitt.mahinsure.misc.GridSpacingItemDecoration;
 import com.rabbitt.mahinsure.model.grid;
+import com.rabbitt.mahinsure.model.inspection;
 import com.rabbitt.simplyvolley.ServerCallback;
 import com.rabbitt.simplyvolley.VolleyAdapter;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -57,6 +58,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.INTERNET;
@@ -65,7 +69,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRecyleItemListener {
 
-    private static final String TAG = "malu";
+    private static final String TAG = "maluPhoto";
 
     private static final int PERMISSION_REQUEST_CODE = 200;
     String lat, lng;
@@ -80,11 +84,14 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
     InternetBroadCast receiver;
     IntentFilter filter;
 
+    String ref_no;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
 
+        ref_no = getIntent().getStringExtra("ref_no");
         checkInternetConnectivity();
         // get the reference of RecyclerView
         recyclerView = findViewById(R.id.grid_recycler);
@@ -124,45 +131,69 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
             }
             Log.i(TAG, "onActivityResult: " + returnValue);
             if (returnValue != null) {
-                Uri imageUri = Uri.fromFile(new File(returnValue.get(0)));
-                CropImage.activity(imageUri)
-                        .start(this);
-            }
-        }
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                try
+                {
+                    Uri imageUri = Uri.fromFile(new File(returnValue.get(0)));
 
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
-            try {
-                if (resultCode == RESULT_OK) {
-                    Uri resultUri = null;
-                    if (result != null) {
-                        resultUri = result.getUri();
-                    }
-
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
-
-                    Log.i(TAG, "onActivityResult: " + resultUri + " " + bitmap.toString());
+                    Log.i(TAG, "onActivityResult: " + imageUri + " " + bitmap.toString());
                     grid model = events.get(position);
                     model.setImage(mark(bitmap));
+                    model.setBool(true);
 
                     Log.i(TAG, "onActivityResult: " + position + "   " + model.getEvent_name());
 
                     customAdapter.notifyDataSetChanged();
-
-                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    Exception error = result.getError();
                 }
-            } catch (IOException | NullPointerException ex) {
-                Log.i(TAG, "Exception: " + ex.getMessage());
+                catch(Exception e)
+                {
+                    Log.i(TAG, "Exception: "+e.toString());
+                }
+
+
+
+
+//                CropImage.activity(imageUri)
+//                        .start(this);
             }
-
         }
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == 0) {
-            Pix.start(this, Options.init().setRequestCode(100));
-        }
+//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+//
+//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+//
+//            try {
+//                if (resultCode == RESULT_OK) {
+//                    Uri resultUri = null;
+//                    if (result != null) {
+//                        resultUri = result.getUri();
+//                    }
+//
+//                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+//
+//                    Log.i(TAG, "onActivityResult: " + resultUri + " " + bitmap.toString());
+//                    grid model = events.get(position);
+//                    model.setImage(mark(bitmap));
+//                    model.setBool(true);
+//
+//                    Log.i(TAG, "onActivityResult: " + position + "   " + model.getEvent_name());
+//
+//                    customAdapter.notifyDataSetChanged();
+//
+//                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                    Exception error = result.getError();
+//                }
+//            } catch (IOException | NullPointerException ex) {
+//                Log.i(TAG, "Exception: " + ex.getMessage());
+//            }
+//
+//        }
+
+//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == 0) {
+//            Pix.start(this, Options.init().setRequestCode(100));
+//        }
     }
 
     @Override
@@ -175,17 +206,37 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
     }
 
     public void upload_image(View view) {
-        Log.i(TAG, "Upload_: " + imagetostring(bitmap));
+//        Log.i(TAG, "Upload_: " + imagetostring(bitmap));
 
         VolleyAdapter va = new VolleyAdapter(this);
+        Realm realm = Realm.getDefaultInstance();
+
+
+        int i = 1;
+        for (grid model_ : events) {
+            if (!model_.getBool()) {
+                if (i <= 20)
+                {
+                    post_dialog();
+                    Log.i(TAG, "Inside_if: ");
+                    return;
+                }
+            }
+            i++;
+        }
+
+        Log.i(TAG, "upload_image: after checking>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        Log.i(TAG, "upload_image: t-10");
 
         for (grid model_ : events) {
+
+
             Log.i(TAG, ">>>>>>>>>Testing: " + model_.getEvent_name() + "  " + model_.getImage());
 
             String aa = imagetostring(model_.getImage());
             HashMap<String, String> map = new HashMap<>();
             map.put("image", aa);
-            map.put("name", model_.getEvent_name());
+            map.put("name", stringFormattor(model_.getEvent_name()));
             va.insertData(map, Config.UPLOAD, new ServerCallback() {
                 @Override
                 public void onSuccess(String s) {
@@ -197,10 +248,38 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
                     Toast.makeText(PhotoActivity.this, s, Toast.LENGTH_SHORT).show();
                 }
             });
+
         }
 
 
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                try {
+                    String refno = "<pending>";
+                    RealmResults<inspection> persons = realm.where(inspection.class).equalTo("ref_no", refno).findAll();
+                    persons.setInt("color", 2);
+                    persons.setString("sub", getDate());
+                } catch (Exception e) {
+                    Log.i(TAG, "Exception: " + e.getMessage());
+                }
+            }
+        });
 
+
+    }
+
+    private void post_dialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.valid_dialog);
+        dialog.setCancelable(true);
+
+        try {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+        } catch (WindowManager.BadTokenException e) {
+            e.printStackTrace();
+        }
     }
 
     public String imagetostring(Bitmap bitmap) {
@@ -223,17 +302,12 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
         Paint paint = new Paint();
         paint.setColor(Color.GREEN);
         paint.setAlpha(1000);
-        paint.setTextSize(50);
+        paint.setTextSize(30);
         paint.setTypeface(Typeface.DEFAULT_BOLD);
         paint.setAntiAlias(true);
 
-        Date c = Calendar.getInstance().getTime();
 
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat df = new SimpleDateFormat(getString(R.string.date_format));
-        String formattedDate = df.format(c);
-
-        String watermark = "Date: " + formattedDate;
+        String watermark = "Date: " + getDate();
         Log.i(TAG, "mark: " + watermark);
 
         canvas.drawText(watermark, 50, 100, paint);
@@ -243,6 +317,22 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
 
         bitmap = result;
         return result;
+    }
+
+
+    public String stringFormattor(String string) {
+        string = string.toLowerCase();
+        string = string.replaceAll("\\s+", "");
+        return string;
+    }
+
+    public String getDate() {
+        Date c = Calendar.getInstance().getTime();
+
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat df = new SimpleDateFormat(getString(R.string.date_format));
+
+        return df.format(c);
     }
 
     @SuppressLint({"MissingPermission", "DefaultLocale"})
@@ -283,6 +373,14 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
 
     private boolean checkPermission() {
 
+        try
+        {
+
+        }
+        catch(Exception e)
+        {
+            Log.i(TAG, "Exception: ");
+        }
         Log.i(TAG, "checkPermission: ");
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), INTERNET);
         int result2 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
@@ -328,8 +426,7 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
         back_checker();
     }
 
-    public void back_checker()
-    {
+    public void back_checker() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.photo_dialog);
         dialog.setCancelable(false);
@@ -339,7 +436,9 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                startActivity(new Intent(PhotoActivity.this, DetailActivity.class));
+                Intent intent = new Intent(PhotoActivity.this, DetailActivity.class);
+                intent.putExtra("ref_no", ref_no);
+                startActivity(intent);
                 finish();
             }
         });
@@ -359,6 +458,7 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
             e.printStackTrace();
         }
     }
+
     @Override
     public void onBackPressed() {
         back_checker();

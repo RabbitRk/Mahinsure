@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Mobi Inspect</string>
-    <string name="date_format">dd-MMM-yyyy</string>
+    <string name="date_format">yyyy-MM-dd HH:mm:ssy</string>
 </resources>

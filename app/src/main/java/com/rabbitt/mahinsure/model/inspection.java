@@ -1,17 +1,39 @@
 package com.rabbitt.mahinsure.model;
 
-import java.util.Date;
-
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class inspection extends RealmObject {
     private String year, date, month, v_no, cus_name, content;
     private int color;
-    private Date date_;
     @PrimaryKey
     private String ref_no;
 
+    private String rec, sub, app;
+
+    public String getRec() {
+        return rec;
+    }
+
+    public void setRec(String rec) {
+        this.rec = rec;
+    }
+
+    public String getSub() {
+        return sub;
+    }
+
+    public void setSub(String sub) {
+        this.sub = sub;
+    }
+
+    public String getApp() {
+        return app;
+    }
+
+    public void setApp(String app) {
+        this.app = app;
+    }
 
     public String getContent() {
         return content;
@@ -55,14 +77,6 @@ public class inspection extends RealmObject {
 
     public String getCus_name() {
         return cus_name;
-    }
-
-    public Date getDate_() {
-        return date_;
-    }
-
-    public void setDate_(Date date_) {
-        this.date_ = date_;
     }
 
     public String getRef_no() {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="white">#00113C</color>
+    <color name="white">#0B152E</color>
+    <!--<color name="white">#00113C</color>-->
     <color name="black">#FFFFFF</color>
     <color name="button_white">#FFFFFF</color>
-
 </resources>

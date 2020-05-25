@@ -62,7 +62,7 @@ public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.holder>{
         if (dataModel.getColor() == 2)
         {
             holder.sub.setVisibility(View.VISIBLE);
-            holder.submitted.setText(String.valueOf(dataModel.getDate_()));
+            holder.submitted.setText(String.valueOf(dataModel.getSub()));
         }
 
         holder.ref_no.setText(dataModel.getRef_no());

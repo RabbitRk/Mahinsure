@@ -1,19 +1,28 @@
 package com.rabbitt.mahinsure.model;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 
 public class grid {
 
-    String event_name;
-    Bitmap image_uri;
+    private String event_name;
+    private Boolean bool;
+    private Bitmap image_uri;
 
     public grid() {
     }
 
-    public grid(String event_name, Bitmap bitmap) {
+    public Boolean getBool() {
+        return bool;
+    }
+
+    public void setBool(Boolean bool) {
+        this.bool = bool;
+    }
+
+    public grid(String event_name, Bitmap bitmap, Boolean bool) {
         this.event_name = event_name;
         this.image_uri = bitmap;
+        this.bool = bool;
     }
 
     public String getEvent_name() {
