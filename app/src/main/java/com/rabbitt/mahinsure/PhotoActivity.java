@@ -44,6 +44,7 @@ import com.rabbitt.mahinsure.broadcast.InternetBroadCast;
 import com.rabbitt.mahinsure.misc.GridSpacingItemDecoration;
 import com.rabbitt.mahinsure.model.grid;
 import com.rabbitt.mahinsure.model.inspection;
+import com.rabbitt.mahinsure.prefs.PrefsManager;
 import com.rabbitt.simplyvolley.ServerCallback;
 import com.rabbitt.simplyvolley.VolleyAdapter;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -84,14 +85,18 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
     InternetBroadCast receiver;
     IntentFilter filter;
 
-    String ref_no;
+    String ref_no_, ref_p;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
 
-        ref_no = getIntent().getStringExtra("ref_no");
+        ref_no_ = getIntent().getStringExtra("ref_no");
+
+        // Getting Ref_no from preference
+        ref_p = new PrefsManager(this).getRefNo();
+
         checkInternetConnectivity();
         // get the reference of RecyclerView
         recyclerView = findViewById(R.id.grid_recycler);
@@ -109,6 +114,9 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
         //endregion
 
         customAdapter = new GridAdapter(PhotoActivity.this, events, this);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         recyclerView.setAdapter(customAdapter); // set the Adapter to RecyclerView
     }
 
@@ -138,9 +146,20 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
 
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
+                    Bitmap scaledBitmap;
+                    if (bitmap.getWidth() >= bitmap.getHeight()) {
+                        scaledBitmap = Bitmap.createBitmap(bitmap, bitmap.getWidth() / 2
+                                        - bitmap.getHeight() / 2,
+                                0, bitmap.getHeight(), bitmap.getHeight());
+                    } else {
+                        scaledBitmap = Bitmap.createBitmap(bitmap, 0, bitmap.getHeight() / 2
+                                        - bitmap.getWidth() / 2,
+                                bitmap.getWidth(), bitmap.getWidth());
+                    }
+
                     Log.i(TAG, "onActivityResult: " + imageUri + " " + bitmap.toString());
                     grid model = events.get(position);
-                    model.setImage(mark(bitmap));
+                    model.setImage(mark(scaledBitmap));
                     model.setBool(true);
 
                     Log.i(TAG, "onActivityResult: " + position + "   " + model.getEvent_name());
@@ -151,9 +170,6 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
                 {
                     Log.i(TAG, "Exception: "+e.toString());
                 }
-
-
-
 
 //                CropImage.activity(imageUri)
 //                        .start(this);
@@ -202,7 +218,14 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
 
         this.position = position;
 
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//            }
+//        }).start();
+
         Pix.start(this, Options.init().setRequestCode(100));
+
     }
 
     public void upload_image(View view) {
@@ -230,7 +253,6 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
 
         for (grid model_ : events) {
 
-
             Log.i(TAG, ">>>>>>>>>Testing: " + model_.getEvent_name() + "  " + model_.getImage());
 
             String aa = imagetostring(model_.getImage());
@@ -256,8 +278,8 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
             @Override
             public void execute(Realm realm) {
                 try {
-                    String refno = "<pending>";
-                    RealmResults<inspection> persons = realm.where(inspection.class).equalTo("ref_no", refno).findAll();
+                    String ref_no = ref_no_;
+                    RealmResults<inspection> persons = realm.where(inspection.class).equalTo("ref_no", ref_no).findAll();
                     persons.setInt("color", 2);
                     persons.setString("sub", getDate());
                 } catch (Exception e) {
@@ -372,23 +394,16 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
     }
 
     private boolean checkPermission() {
+        int result1, result2, result3, result4, result5;
 
-        try
-        {
-
-        }
-        catch(Exception e)
-        {
-            Log.i(TAG, "Exception: ");
-        }
         Log.i(TAG, "checkPermission: ");
-        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), INTERNET);
-        int result2 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
-        int result3 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-        int result4 = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION);
-        int result5 = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_COARSE_LOCATION);
-        return result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED && result3 == PackageManager.PERMISSION_GRANTED && result4 == PackageManager.PERMISSION_GRANTED && result5 == PackageManager.PERMISSION_GRANTED;
+        result1 = ContextCompat.checkSelfPermission(getApplicationContext(), INTERNET);
+        result2 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
+        result3 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+        result4 = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION);
+        result5 = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_COARSE_LOCATION);
 
+        return result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED && result3 == PackageManager.PERMISSION_GRANTED && result4 == PackageManager.PERMISSION_GRANTED && result5 == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermission() {
@@ -437,7 +452,7 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
             public void onClick(View v) {
                 dialog.dismiss();
                 Intent intent = new Intent(PhotoActivity.this, DetailActivity.class);
-                intent.putExtra("ref_no", ref_no);
+                intent.putExtra("ref_no", ref_no_);
                 startActivity(intent);
                 finish();
             }

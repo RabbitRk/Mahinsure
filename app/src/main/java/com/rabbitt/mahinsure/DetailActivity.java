@@ -2,12 +2,15 @@ package com.rabbitt.mahinsure;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.ContactsContract;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.rabbitt.mahinsure.model.inspection;
+import com.rabbitt.mahinsure.prefs.PrefsManager;
 import com.rabbitt.simplyvolley.VolleyAdapter;
 
 import io.realm.Realm;
@@ -43,10 +46,20 @@ public class DetailActivity extends AppCompatActivity {
 //                results.deleteAllFromRealm();
 //            }
 //        });
-        Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
-        intent.putExtra("ref_no", ref_no);
-        startActivity(intent);
-        finish();
+        //Setting Ref no
+        new PrefsManager(this).setRefNo(ref_no);
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
+                intent.putExtra("ref_no", ref_no);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
     @Override

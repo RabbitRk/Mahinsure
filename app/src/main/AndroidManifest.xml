@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".FinalActivity" />
-        <activity android:name=".PhotoActivity" />
+        <activity android:name=".PhotoActivity"
+            android:launchMode = "singleInstance"/>
         <activity android:name=".DetailActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".Upload" />

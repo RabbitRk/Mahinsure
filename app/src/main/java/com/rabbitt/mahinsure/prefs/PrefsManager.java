@@ -9,8 +9,13 @@ public class PrefsManager {
     private static final String PREF_NAME = "USER_PREFS";
     private static final String LOGIN = "IsFirstTimeLaunch";
 
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
+    private static final String REF_NAME = "REF_NAME";
+    private static final String REF_NO = "REF_NO";
+
+
+
+    private SharedPreferences pref, r_pref;
+    private SharedPreferences.Editor editor, r_editor;
 
     public PrefsManager(Context context) {
 
@@ -18,6 +23,9 @@ public class PrefsManager {
 
         pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+
+        r_pref = context.getSharedPreferences(REF_NAME, PRIVATE_MODE);
+        r_editor = r_pref.edit();
     }
 
     public boolean isFirstTimeLaunch() {
@@ -27,5 +35,16 @@ public class PrefsManager {
     public void setFirstTimeLaunch(boolean isFirstTime) {
         editor.putBoolean(LOGIN, isFirstTime);
         editor.commit();
+    }
+
+    public String getRefNo()
+    {
+        return r_pref.getString(REF_NO,"");
+    }
+
+    public void setRefNo(String refNo)
+    {
+        r_editor.putString(REF_NO, refNo);
+        r_editor.commit();
     }
 }
