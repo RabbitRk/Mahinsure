@@ -47,6 +47,13 @@ public class FinishedAdapter extends RecyclerView.Adapter<FinishedAdapter.holder
         holder.date.setText(dataModel.getDate());
         holder.month.setText(dataModel.getMonth());
         holder.year.setText(dataModel.getYear());
+
+        holder.sub.setVisibility(View.VISIBLE);
+        holder.submitted.setText(String.valueOf(dataModel.getSub()));
+
+        holder.app.setVisibility(View.VISIBLE);
+        holder.approved.setText(String.valueOf(dataModel.getApp()));
+
     }
 
     @Override
@@ -58,7 +65,9 @@ public class FinishedAdapter extends RecyclerView.Adapter<FinishedAdapter.holder
 
         TextView ref_no, v_no, cus_name;
         TextView date, month, year;
+        TextView approved, submitted;
         View template;
+        ViewGroup sub, app;
         OnRecyleItemListener onRecyleItemListener;
 
         public holder(@NonNull View itemView, OnRecyleItemListener mOnRecycleItemListener) {
@@ -71,6 +80,13 @@ public class FinishedAdapter extends RecyclerView.Adapter<FinishedAdapter.holder
             month = itemView.findViewById(R.id.month);
             date = itemView.findViewById(R.id.day);
             template = itemView.findViewById(R.id.tem_plate);
+
+            approved = itemView.findViewById(R.id.approved);
+            submitted = itemView.findViewById(R.id.submited_on);
+
+            sub = itemView.findViewById(R.id.submit_layout);
+            app = itemView.findViewById(R.id.approved_layout);
+
             itemView.setOnClickListener(this);
         }
 

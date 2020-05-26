@@ -115,6 +115,7 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
             model.setMonth(ins.getMonth());
             model.setColor(ins.getColor());
             model.setContent(ins.getContent());
+            model.setSub(ins.getSub());
             pending.add(model);
         }
         return pending;
@@ -137,6 +138,8 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
             model.setYear(ins.getYear());
             model.setMonth(ins.getMonth());
             model.setColor(ins.getColor());
+            model.setSub(ins.getSub());
+            model.setApp(ins.getApp());
             finished.add(model);
         }
 
@@ -219,5 +222,24 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
     public void settingpage(View view) {
         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         finish();
+    }
+
+    public void get_data(View view) {
+        RealmResults<inspection> entries;
+        entries = realm.where(inspection.class).findAll();
+//        inspection model = null;
+//        for (inspection ins : entries) {
+//            model = new inspection();
+//            model.setRef_no(ins.getRef_no());
+//            model.setV_no(ins.getV_no());
+//            model.setCus_name(ins.getCus_name());
+//            model.setDate(ins.getDate());
+//            model.setYear(ins.getYear());
+//            model.setMonth(ins.getMonth());
+//            model.setColor(ins.getColor());
+//            model.setContent(ins.getContent());
+//        }
+
+        Log.i(TAG, "get_data: "+entries.toString());
     }
 }

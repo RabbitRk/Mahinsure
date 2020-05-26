@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.rabbitt.mahinsure.R;
 import com.rabbitt.mahinsure.model.grid;
 
@@ -45,6 +46,10 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyViewHolder>{
         grid dataModel = dataModelArrayList.get(position);
         holder.name.setText(String.valueOf(dataModel.getEvent_name()));
         holder.image.setImageBitmap(dataModel.getImage());
+
+        Glide.with(context)
+                .load(dataModel.getImage())
+                .into(holder.image);
     }
 
     @Override

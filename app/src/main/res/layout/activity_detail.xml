@@ -20,6 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:tint="@color/black"
+            android:onClick="go_back"
             android:src="@drawable/ic_arrow_back" />
 
         <TextView
@@ -32,6 +33,21 @@
             android:text="Customer Info" />
     </RelativeLayout>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:lottie_fileName="searching.json"
+        app:lottie_loop="true"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center_horizontal"
+        app:lottie_autoPlay="true" />
+
+    <LinearLayout
+        android:id="@+id/group"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
@@ -43,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/grid_recycler"
+                android:id="@+id/deta_recycler"
                 android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -56,10 +72,11 @@
                 android:background="@drawable/btn_bg"
                 android:fontFamily="@font/open_semi"
                 android:text="Inspect"
-                android:onClick="deleterealm"
+                android:onClick="startInspection"
                 android:textAllCaps="false"
                 android:textColor="@color/button_white"
                 android:textSize="18sp" />
         </LinearLayout>
     </ScrollView>
+    </LinearLayout>
 </LinearLayout>

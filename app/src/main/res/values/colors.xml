@@ -16,8 +16,11 @@
     <color name="warning">#FF8000</color>
     <color name="danger">#FD2727</color>
 
+
     <color name="colorAccentLite">#2500B0FF</color>
 
+    <color name="colorPrimaryPix">#033CCF</color>
+    <color name="colorPrimaryLightPix">#80075e54</color>
     <!--    D6 EC EE    -->
     <!--    BD E4 E8    -->
     <!--    99 D8 DE    -->

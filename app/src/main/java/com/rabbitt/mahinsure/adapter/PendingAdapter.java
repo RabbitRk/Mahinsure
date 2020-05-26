@@ -63,6 +63,7 @@ public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.holder>{
         {
             holder.sub.setVisibility(View.VISIBLE);
             holder.submitted.setText(String.valueOf(dataModel.getSub()));
+            Log.i(TAG, "onBindViewHolder: "+dataModel.getSub());
         }
 
         holder.ref_no.setText(dataModel.getRef_no());

@@ -1,7 +1,16 @@
 package com.rabbitt.mahinsure.model;
 
 public class demo {
-    String data;
+
+    private String label, data;
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
     public String getData() {
         return data;

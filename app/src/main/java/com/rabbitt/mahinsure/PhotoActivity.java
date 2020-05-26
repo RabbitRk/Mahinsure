@@ -47,17 +47,18 @@ import com.rabbitt.mahinsure.model.inspection;
 import com.rabbitt.mahinsure.prefs.PrefsManager;
 import com.rabbitt.simplyvolley.ServerCallback;
 import com.rabbitt.simplyvolley.VolleyAdapter;
-import com.theartofdev.edmodo.cropper.CropImage;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -140,35 +141,34 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
             Log.i(TAG, "onActivityResult: " + returnValue);
             if (returnValue != null) {
 
-                try
-                {
+                try {
                     Uri imageUri = Uri.fromFile(new File(returnValue.get(0)));
 
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
-                    Bitmap scaledBitmap;
-                    if (bitmap.getWidth() >= bitmap.getHeight()) {
-                        scaledBitmap = Bitmap.createBitmap(bitmap, bitmap.getWidth() / 2
-                                        - bitmap.getHeight() / 2,
-                                0, bitmap.getHeight(), bitmap.getHeight());
-                    } else {
-                        scaledBitmap = Bitmap.createBitmap(bitmap, 0, bitmap.getHeight() / 2
-                                        - bitmap.getWidth() / 2,
-                                bitmap.getWidth(), bitmap.getWidth());
-                    }
+//                    Bitmap scaledBitmap;
+//                    if (bitmap.getWidth() >= bitmap.getHeight()) {
+//                        scaledBitmap = Bitmap.createBitmap(bitmap, bitmap.getWidth() / 2
+//                                        - bitmap.getHeight() / 2,
+//                                0, bitmap.getHeight(), bitmap.getHeight());
+//                    } else {
+//                        scaledBitmap = Bitmap.createBitmap(bitmap, 0, bitmap.getHeight() / 2
+//                                        - bitmap.getWidth() / 2,
+//                                bitmap.getWidth(), bitmap.getWidth());
+//                    }
+//
+//                    scaledBitmap = compressed(scaledBitmap);
 
                     Log.i(TAG, "onActivityResult: " + imageUri + " " + bitmap.toString());
                     grid model = events.get(position);
-                    model.setImage(mark(scaledBitmap));
+                    model.setImage(mark(bitmap));
                     model.setBool(true);
 
                     Log.i(TAG, "onActivityResult: " + position + "   " + model.getEvent_name());
 
                     customAdapter.notifyDataSetChanged();
-                }
-                catch(Exception e)
-                {
-                    Log.i(TAG, "Exception: "+e.toString());
+                } catch (Exception e) {
+                    Log.i(TAG, "Exception: " + e.toString());
                 }
 
 //                CropImage.activity(imageUri)
@@ -211,6 +211,16 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
 //            Pix.start(this, Options.init().setRequestCode(100));
 //        }
     }
+//
+//    private Bitmap compressed(Bitmap scaledBitmap) {
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 10, stream);
+//        byte[] imageInByte = stream.toByteArray();
+//
+//        Log.i(TAG, "compressed: " + imageInByte.length);
+//
+//        return BitmapFactory.decodeByteArray(imageInByte, 0, imageInByte.length);
+//    }
 
     @Override
     public void OnItemClick(int position) {
@@ -218,28 +228,23 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
 
         this.position = position;
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//            }
-//        }).start();
-
-        Pix.start(this, Options.init().setRequestCode(100));
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Pix.start(PhotoActivity.this, Options.init().setRequestCode(100));
+            }
+        }).start();
     }
 
     public void upload_image(View view) {
-//        Log.i(TAG, "Upload_: " + imagetostring(bitmap));
 
         VolleyAdapter va = new VolleyAdapter(this);
         Realm realm = Realm.getDefaultInstance();
 
-
         int i = 1;
         for (grid model_ : events) {
             if (!model_.getBool()) {
-                if (i <= 20)
-                {
+                if (i <= 20) {
                     post_dialog();
                     Log.i(TAG, "Inside_if: ");
                     return;
@@ -251,32 +256,35 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
         Log.i(TAG, "upload_image: after checking>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         Log.i(TAG, "upload_image: t-10");
 
+
         for (grid model_ : events) {
 
             Log.i(TAG, ">>>>>>>>>Testing: " + model_.getEvent_name() + "  " + model_.getImage());
+            if (model_.getBool()) {
+                String aa = imagetostring(model_.getImage());
+                HashMap<String, String> map = new HashMap<>();
+                map.put("image", aa);
+                map.put("v_no", "TN31RK1104");
+                map.put("name", stringFormattor(model_.getEvent_name()));
 
-            String aa = imagetostring(model_.getImage());
-            HashMap<String, String> map = new HashMap<>();
-            map.put("image", aa);
-            map.put("name", stringFormattor(model_.getEvent_name()));
-            va.insertData(map, Config.UPLOAD, new ServerCallback() {
-                @Override
-                public void onSuccess(String s) {
-                    Toast.makeText(PhotoActivity.this, s, Toast.LENGTH_SHORT).show();
-                }
+                va.insertData(map, Config.UPLOAD, new ServerCallback() {
+                    @Override
+                    public void onSuccess(String s) {
+                        Toast.makeText(PhotoActivity.this, s, Toast.LENGTH_SHORT).show();
+                    }
 
-                @Override
-                public void onError(String s) {
-                    Toast.makeText(PhotoActivity.this, s, Toast.LENGTH_SHORT).show();
-                }
-            });
-
+                    @Override
+                    public void onError(String s) {
+                        Toast.makeText(PhotoActivity.this, s, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
 
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
-            public void execute(Realm realm) {
+            public void execute(@NotNull Realm realm) {
                 try {
                     String ref_no = ref_no_;
                     RealmResults<inspection> persons = realm.where(inspection.class).equalTo("ref_no", ref_no).findAll();
@@ -291,13 +299,55 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
 
     }
 
+//    public void demo_upload(View view) {
+////        for (grid model_ : events) {
+////            Log.i(TAG, ">>>>>>>>>Testing: " + model_.getEvent_name() + "  " + model_.getImage());
+////            if (model_.getBool()) {
+//                HashMap<String, String> map = null;
+//                JSONArray array = new JSONArray();
+//
+//                for (int i = 0; i<=10;i++)
+//                {
+////                    map = new HashMap<>();
+////                    map.put("data1", "val1");
+////                    map.put("data2", "val2");
+//
+//                    array.put("value "+i);
+//                }
+//
+//                Log.i(TAG, "demo_upload: "+array.toString());
+////                HashMap<String, String> postParam = new HashMap<>();
+////                int i=0;
+////                for(String object: friendIds){
+////                    postParam.put("friendIds["+(i++)+"]", object);
+////                    // you first send both data with same param name as friendnr[] ....  now send with params friendnr[0],friendnr[1] ..and so on
+////                }
+//
+//
+//
+////                new VolleyAdapter(this).insertData(map, Config.DEMO, new ServerCallback() {
+////                    @Override
+////                    public void onSuccess(String s) {
+////                        Toast.makeText(PhotoActivity.this, s, Toast.LENGTH_SHORT).show();
+////                    }
+////
+////                    @Override
+////                    public void onError(String s) {
+////                        Toast.makeText(PhotoActivity.this, s, Toast.LENGTH_SHORT).show();
+////                    }
+////                });
+////            }
+////        }
+//    }
+
+
     private void post_dialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.valid_dialog);
         dialog.setCancelable(true);
 
         try {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.show();
         } catch (WindowManager.BadTokenException e) {
             e.printStackTrace();
@@ -467,7 +517,7 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
         });
 
         try {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.show();
         } catch (WindowManager.BadTokenException e) {
             e.printStackTrace();
@@ -478,4 +528,6 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
     public void onBackPressed() {
         back_checker();
     }
+
+
 }
