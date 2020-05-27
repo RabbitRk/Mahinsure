@@ -47,9 +47,9 @@ public class GridDataAdpater {
                 new grid("CNG LPG kit", bitmap, false),
                 new grid("RC copy", bitmap, false),
                 new grid("Pre-insurance", bitmap, false),
-                new grid("Dents & Scratches", bitmap, false),
-                new grid("Dents & Scratches", bitmap, false),
-                new grid("Dents & Scratches", bitmap, false)
+                new grid("Dents & Scratches 1", bitmap, false),
+                new grid("Dents & Scratches 2", bitmap, false),
+                new grid("Dents & Scratches 3", bitmap, false)
         );
     }
 

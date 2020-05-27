@@ -41,7 +41,7 @@ public class DetailActivity extends AppCompatActivity implements DetailAdapter.O
     private static final String TAG = "maluDetail";
     VolleyAdapter volleyAdapter;
     RecyclerView recyclerView;
-    String ref_no;
+    String ref_no, v_no;
     List<demo> model = new ArrayList<>();
     demo data = null;
     LottieAnimationView animationView;
@@ -53,8 +53,6 @@ public class DetailActivity extends AppCompatActivity implements DetailAdapter.O
 
         animationView = findViewById(R.id.animation_view);
         viewGroup = findViewById(R.id.group);
-
-
 
         ref_no = getIntent().getStringExtra("ref_no");
         recyclerView = findViewById(R.id.deta_recycler);
@@ -71,13 +69,6 @@ public class DetailActivity extends AppCompatActivity implements DetailAdapter.O
                 Log.i(TAG, "onSuccess: "+s);
 
                 try {
-
-//                    JSONArray arr = new JSONArray(s);
-//                    int n = arr.length();
-
-//                    Log.i(TAG, "onResponse: " + n);
-//                    for (int i = 1; i < n; i++) {
-//
                         JSONObject json = new JSONObject(s);
                         Iterator<String> keys = json.keys();
 
@@ -88,13 +79,16 @@ public class DetailActivity extends AppCompatActivity implements DetailAdapter.O
                             data.setLabel(key);
                             data.setData((String) json.get(key));
 
+                            if (key.equals("Vehicle Number"))
+                            {
+                                v_no = (String) json.get(key);
+                            }
+
                             Log.i(TAG, "onResponse: " + "Key :" + key + "  Value :" + json.get(key));
                             model.add(data);
 
                             updateRecycler(model);
                         }
-//
-//                    }
 
                 } catch (JSONException e) {
                     Log.i(TAG, "Error: " + e.getMessage());
@@ -125,14 +119,14 @@ public class DetailActivity extends AppCompatActivity implements DetailAdapter.O
     public void startInspection(View view) {
 
         //Setting Ref no
-        new PrefsManager(this).setRefNo(ref_no);
+        new PrefsManager(this).setRefNo(ref_no, v_no);
 
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
-                intent.putExtra("ref_no", ref_no);
+//                Intent intent = new Intent(getApplicationContext(), Upload.class);
                 startActivity(intent);
                 finish();
             }

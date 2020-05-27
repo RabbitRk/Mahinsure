@@ -56,4 +56,6 @@ dependencies {
     implementation 'com.github.arcadefire:nice-spinner:1.4.5'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    implementation 'com.daasuu:animateHorizontalProgressBar:0.2.4'
 }

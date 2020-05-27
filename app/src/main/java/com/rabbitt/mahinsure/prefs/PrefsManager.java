@@ -6,11 +6,14 @@ import android.content.SharedPreferences;
 public class PrefsManager {
 
     // Shared preferences file name
-    private static final String PREF_NAME = "USER_PREFS";
+    public static final String PREF_NAME = "USER_PREFS";
     private static final String LOGIN = "IsFirstTimeLaunch";
 
-    private static final String REF_NAME = "REF_NAME";
+    private static final String REF_PREF = "REF_PREF";
     private static final String REF_NO = "REF_NO";
+    private static final String V_NO = "V_NO";
+
+    public static final String USER_ID = "USER_ID";
 
 
 
@@ -24,7 +27,7 @@ public class PrefsManager {
         pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
 
-        r_pref = context.getSharedPreferences(REF_NAME, PRIVATE_MODE);
+        r_pref = context.getSharedPreferences(REF_PREF, PRIVATE_MODE);
         r_editor = r_pref.edit();
     }
 
@@ -42,9 +45,15 @@ public class PrefsManager {
         return r_pref.getString(REF_NO,"");
     }
 
-    public void setRefNo(String refNo)
+    public String getvNo()
+    {
+        return r_pref.getString(V_NO, "");
+    }
+
+    public void setRefNo(String refNo, String v_no)
     {
         r_editor.putString(REF_NO, refNo);
+        r_editor.putString(V_NO, v_no);
         r_editor.commit();
     }
 }

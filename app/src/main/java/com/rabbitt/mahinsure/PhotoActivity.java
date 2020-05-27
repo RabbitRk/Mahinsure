@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.daasuu.ahp.AnimateHorizontalProgressBar;
 import com.fxn.pix.Options;
 import com.fxn.pix.Pix;
 import com.rabbitt.mahinsure.adapter.GridAdapter;
@@ -86,17 +87,19 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
     InternetBroadCast receiver;
     IntentFilter filter;
 
-    String ref_no_, ref_p;
+    String vno_p, ref_p;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
 
-        ref_no_ = getIntent().getStringExtra("ref_no");
 
         // Getting Ref_no from preference
         ref_p = new PrefsManager(this).getRefNo();
+        vno_p = new PrefsManager(this).getvNo();
+
+        Log.i(TAG, "onCreate: Ref: "+ref_p+" Vno: "+vno_p);
 
         checkInternetConnectivity();
         // get the reference of RecyclerView
@@ -211,16 +214,6 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
 //            Pix.start(this, Options.init().setRequestCode(100));
 //        }
     }
-//
-//    private Bitmap compressed(Bitmap scaledBitmap) {
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 10, stream);
-//        byte[] imageInByte = stream.toByteArray();
-//
-//        Log.i(TAG, "compressed: " + imageInByte.length);
-//
-//        return BitmapFactory.decodeByteArray(imageInByte, 0, imageInByte.length);
-//    }
 
     @Override
     public void OnItemClick(int position) {
@@ -236,9 +229,12 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
         }).start();
     }
 
-    public void upload_image(View view) {
 
-        VolleyAdapter va = new VolleyAdapter(this);
+    public void upload_image(View view) {
+        final int[] jumpTime = {0};
+        final AnimateHorizontalProgressBar progressBar;
+
+        final VolleyAdapter va = new VolleyAdapter(this);
         Realm realm = Realm.getDefaultInstance();
 
         int i = 1;
@@ -257,36 +253,56 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
         Log.i(TAG, "upload_image: t-10");
 
 
-        for (grid model_ : events) {
+        final Dialog dialog = new Dialog(PhotoActivity.this);
+        dialog.setContentView(R.layout.progress_dialog);
+        dialog.setCancelable(false);
 
-            Log.i(TAG, ">>>>>>>>>Testing: " + model_.getEvent_name() + "  " + model_.getImage());
-            if (model_.getBool()) {
-                String aa = imagetostring(model_.getImage());
-                HashMap<String, String> map = new HashMap<>();
-                map.put("image", aa);
-                map.put("v_no", "TN31RK1104");
-                map.put("name", stringFormattor(model_.getEvent_name()));
+//        progressBar = dialog.findViewById(R.id.animate_progress_bar);
+//        progressBar.setMax(23000);
+//        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        dialog.show();
 
-                va.insertData(map, Config.UPLOAD, new ServerCallback() {
-                    @Override
-                    public void onSuccess(String s) {
-                        Toast.makeText(PhotoActivity.this, s, Toast.LENGTH_SHORT).show();
+
+        final Thread t_dialog =  new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                for (grid model_ : events) {
+
+                    Log.i(TAG, ">>>>>>>>>Testing: " + model_.getEvent_name() + "  " + model_.getImage());
+                    if (model_.getBool()) {
+                        String aa = imagetostring(model_.getImage());
+                        HashMap<String, String> map = new HashMap<>();
+                        map.put("image", aa);
+                        map.put("v_no", "TN31RK0215");
+                        map.put("name", stringFormattor(model_.getEvent_name()));
+
+                        va.insertData(map, Config.UPLOAD, new ServerCallback() {
+                            @Override
+                            public void onSuccess(String s) {
+
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onError(String s) {
+                                Toast.makeText(PhotoActivity.this, s, Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        });
                     }
-
-                    @Override
-                    public void onError(String s) {
-                        Toast.makeText(PhotoActivity.this, s, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                }
             }
-        }
+        });
 
+        t_dialog.start();
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(@NotNull Realm realm) {
                 try {
-                    String ref_no = ref_no_;
+                    String ref_no = ref_p;
                     RealmResults<inspection> persons = realm.where(inspection.class).equalTo("ref_no", ref_no).findAll();
                     persons.setInt("color", 2);
                     persons.setString("sub", getDate());
@@ -295,8 +311,6 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
                 }
             }
         });
-
-
     }
 
 //    public void demo_upload(View view) {
@@ -502,7 +516,7 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
             public void onClick(View v) {
                 dialog.dismiss();
                 Intent intent = new Intent(PhotoActivity.this, DetailActivity.class);
-                intent.putExtra("ref_no", ref_no_);
+                intent.putExtra("ref_no", ref_p);
                 startActivity(intent);
                 finish();
             }
