@@ -1,6 +1,7 @@
 package com.rabbitt.mahinsure;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -124,10 +125,13 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
         HashMap<String, String> map = new HashMap<>();
         map.put("agen_id", user_id);
 
+        final ProgressDialog loading = ProgressDialog.show(this, "Collecting Information", "Please wait...", false, false);
+
+
         new VolleyAdapter(this).getData(map, Config.GET_DATA, new ServerCallback() {
             @Override
             public void onSuccess(String s) {
-
+                loading.dismiss();
                 Log.i(TAG, "onSuccess: "+s);
 
                 try {
@@ -176,6 +180,7 @@ public class HomePage extends AppCompatActivity implements PendingAdapter.OnRecy
 
             @Override
             public void onError(String s) {
+                loading.dismiss();
                 Log.i(TAG, "onError: " + s);
             }
         });

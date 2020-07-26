@@ -354,7 +354,7 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
 ////        }
 //    }
 
-
+   
     private void post_dialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.valid_dialog);
@@ -404,7 +404,6 @@ public class PhotoActivity extends AppCompatActivity implements GridAdapter.OnRe
         bitmap = result;
         return result;
     }
-
 
     public String stringFormattor(String string) {
         string = string.toLowerCase();
